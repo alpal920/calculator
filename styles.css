@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  border: black;
+  height: 100vh;
+  width: 100%;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* Menu */
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 2em;
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  text-shadow: -2px -2px 0 #292f36, 2px -2px 0 #292f36, -2px 2px 0 #292f36,
+    2px 2px 0 #292f36;
+}
+
+/* Calculator */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-color: cyan;
+}
+
+.calculator-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 600px;
+  height: 700px;
+  margin-top: 25px;
+  margin-bottom: 50px;
+  border-style: solid;
+  border-color: cyan;
+}
+
+.screen-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 50px;
+  width: 450px;
+  height: 100px;
+  border-color: black;
+  border-style: solid;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 450px;
+  height: 500px;
+  border-color: red;
+  border-style: solid;
+}
+.buttons-container > div {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  flex: 1 1 auto;
+}
+.buttons-container > div > * {
+  flex: 1;
+  border-style: dashed;
+  border-color: rgb(58, 45, 45);
+}
+
+.grid-cell {
+  width: 150px; /* Set a fixed width for the buttons */
+  height: 150px; /* Set a fixed height for the buttons */
+  margin: 5px; /* Add some margin to create space between buttons */
+  border: 1px solid black; /* Add border for visual separation */
+}
