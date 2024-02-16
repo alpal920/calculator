@@ -7,20 +7,45 @@ https://dev.to/chrisblakely01/let-s-build-a-basic-calculator-using-flexbox-and-v
 const buttonsContainer = document.querySelector(".buttons-container");
 
 //DOM Functions
-function createGrid(columns, rows) {
-  //4 columns, 5 rows = 20 buttons (gridCells).
-  for (let i = 0; i < columns; i++) {
-    let column = document.createElement("div");
-    column.classList.add("grid-column");
-    for (let j = 0; j < rows; j++) {
-      let gridCell = document.createElement("div");
-      gridCell.classList.add("grid-cell");
-      column.appendChild(gridCell);
+function createButtons() {
+  const buttonNames = [
+    "7",
+    "8",
+    "9",
+    "clear",
+    "delete",
+    "4",
+    "5",
+    "6",
+    "x",
+    "÷",
+    "1",
+    "2",
+    "3",
+    "+",
+    "-",
+    ".",
+    "0",
+    "=",
+  ];
+  const operations = ["+", "-", "x", "÷"];
+  const clearDeletes = ["clear", "delete"];
+  for (let i = 0; i < buttonNames.length; i++) {
+    let calcButton = document.createElement("BUTTON");
+    calcButton.classList.add("calc-button");
+    calcButton.textContent = buttonNames[i];
+    if (buttonNames[i] === "=") {
+      // For example, if you want the third button to take double space
+      calcButton.classList.add("equalSign"); // Add a class to the button
+    } else if (operations.includes(buttonNames[i])) {
+      calcButton.classList.add("operations");
+    } else if (clearDeletes.includes(buttonNames[i])) {
+      calcButton.classList.add("clearDelete");
     }
-    buttonsContainer.appendChild(column);
+    buttonsContainer.appendChild(calcButton);
   }
 }
-createGrid(4, 5);
+createButtons();
 
 /*
 ==========
@@ -62,3 +87,9 @@ function operate(num1, num2, operator) {
     }
   }
 }
+
+/*
+================
+Event Listeners 
+================
+*/
