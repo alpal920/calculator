@@ -5,7 +5,6 @@
 body {
   display: flex;
   flex-direction: column;
-  border: black;
   height: 100vh;
   width: 100%;
   font-family: "Courier New", Courier, monospace;
@@ -24,7 +23,7 @@ body {
   margin-bottom: 10px;
   text-transform: uppercase;
   font-size: 2em;
-  font-family: "Luckiest Guy", cursive;
+  font-family: "Protest Guerrilla", sans-serif;
   font-weight: 400;
   font-style: normal;
   color: white;
@@ -82,35 +81,39 @@ body {
   height: 500px;
 }
 .buttons-container > button {
-  flex-basis: calc(20% - 10px);
+  flex-basis: calc(25% - 10px);
   margin: 5px;
   color: ghostwhite;
-  border: 3px solid ghostwhite;
+  border: 2px solid ghostwhite;
   text-align: center;
   line-height: 1;
   background-color: transparent;
   outline: none;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 20px;
   transition: all 0.5s ease;
 }
-.buttons-container > button.equalSign {
+.buttons-container > button.zeroButton {
   flex-grow: 2;
 }
 
-.buttons-container > button.operations {
-  border-color: #ffff00;
+.buttons-container > button.operations:hover {
+  border-color: #ff00ff;
+  color: #ff00ff;
 }
 
-.buttons-container > button.clearDelete {
-  border-color: #ff00ff;
+.buttons-container > button.clearDelete:hover {
+  border-color: rgb(238, 198, 37);
+  color: rgb(238, 198, 37);
 }
 
 button:hover {
   color: white;
   background-color: #292f36;
   cursor: pointer;
-  border-color: cyan;
+  border: 3px solid cyan;
+  color: cyan;
+  transform: scale(1.1); /* Scale up the button by 10% */
 }
 
 /* Footer */
