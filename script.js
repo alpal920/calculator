@@ -11,7 +11,9 @@ const buttonsContainer = document.querySelector(".buttons-container");
 const displayScreen = document.querySelector(".screen-container");
 
 //DOM Functions
+
 function createButtons() {
+  const operations = ["+", "-", "x", "÷", "=", "+/-", "%"];
   const buttonNames = [
     "AC",
     "+/-",
@@ -33,7 +35,6 @@ function createButtons() {
     ".",
     "=",
   ];
-  const operations = ["+", "-", "x", "÷", "=", "+/-", "%"];
   const clearDeletes = ["AC"];
   for (let i = 0; i < buttonNames.length; i++) {
     let calcButton = document.createElement("BUTTON");
@@ -59,25 +60,25 @@ CALCULATOR
 
 //Calculator Variables
 let total = 0;
-let num1 = total;
-let num2 = 0;
+let num1 = "";
+let num2 = "";
+
 let operator = "";
 
 let displayValues = []; //this is doing nothing for now
-let performOperation = false;
 
 //Calculator Operations
 function add(a, b) {
-  total += a + b;
+  total = a + b;
 }
 function subtract(a, b) {
-  total += a - b;
+  total = a - b;
 }
 function multiply(a, b) {
-  total += a * b;
+  total = a * b;
 }
 function divide(a, b) {
-  total += a / b;
+  total = a / b;
 }
 
 function operate(num1, num2, operator) {
@@ -85,19 +86,19 @@ function operate(num1, num2, operator) {
     add(num1, num2);
   } else if (operator === "-") {
     subtract(num1, num2);
-  } else if (operator === "*") {
+  } else if (operator === "x") {
     multiply(num1, num2);
-  } else if (operator === "/") {
+  } else if (operator === "÷") {
     if (num2 !== 0) {
       divide(num1, num2);
     } else {
-      displayScreen.textContent = "Error";
+      displayScreen.textContent = "Error"; //this isn't working
       total = 0;
     }
   }
   displayScreen.textContent = total;
-  performOperation = false;
-  num1 = total;
+  num1 = "";
+  num2 = "";
   operator = "";
 }
 
@@ -105,16 +106,14 @@ function operate(num1, num2, operator) {
 function allClear() {
   displayScreen.textContent = "";
   total = 0;
-  num1 = total;
-  num2 = 0;
+  num1 = "";
+  num2 = "";
   operator = "";
-  performCalculation = false;
 }
 
 //initiate calculation
 function performCalculation() {
-  performOperation === true;
-  operate();
+  operate(num1, num2, operator);
 }
 
 /*
@@ -128,6 +127,7 @@ and then operate() on the two numbers when the user presses the “=” key.
 Event Listeners 
 ================
 */
+let operators = ["+", "-", "x", "÷"];
 
 function populateDisplay() {
   const calcButtons = document.querySelectorAll(".calc-button");
@@ -136,13 +136,29 @@ function populateDisplay() {
       //only allows values to be shown in display screen (excludes decimal, operators, clears)
       if (!isNaN(parseInt(button.textContent))) {
         displayScreen.textContent += parseInt(button.textContent);
-      } else if (button.textContent === "AC") {
-        allClear();
-      } else if (isNaN(parseInt(button.textContent))) {
-        num2 = parseInt(displayScreen.textContent);
-        operator = button.textContent;
-        performCalculation();
+        console.log(displayScreen.textContent);
+      } else {
+        //if the button clicked is not a number
+        //assign the numbers
+        if (num1 === "") {
+          num1 = parseInt(displayScreen.textContent);
+          displayScreen.textContent = "";
+        } else if (num1 !== "") {
+          num2 = parseInt(displayScreen.textContent);
+        }
+        //assign the operator
+        if (operators.includes(button.textContent)) {
+          console.log(button.textContent);
+          operator = button.textContent;
+        }
+        if (button.textContent === "=") {
+          operate(num1, num2, operator); // after calculating total, if press another number, bug
+        }
+        if (button.textContent === "AC") {
+          allClear();
+        }
       }
+      console.log("num1:", num1, "num2:", num2);
     });
   }
 }
