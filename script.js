@@ -1,7 +1,13 @@
 /*
 Issues: 
-- the operators are not working 
-- Need to figure out how to calculate the first pair, when num1 and num2 are nothing 
+- after making first calculation, storing the total as num1 does not work 
+- how to do multiple calculations at once 
+
+Low Priority: 
+- make . , +/-, % work 
+
+To Add: 
+- add a function to add onto the running total (if pastcalculations.length-2 === "=") 
 
 ==========
 DOM Setup
@@ -65,11 +71,12 @@ let num2 = "";
 
 let operator = "";
 
-let displayValues = []; //this is doing nothing for now
+let pastCalculations = []; //this is doing nothing for now
 
 //Calculator Operations
 function add(a, b) {
   total = a + b;
+  console.log(total);
 }
 function subtract(a, b) {
   total = a - b;
@@ -96,9 +103,14 @@ function operate(num1, num2, operator) {
       total = 0;
     }
   }
+  //this is where diplay screen is updated with total and num1 is saved
   displayScreen.textContent = total;
-  num1 = "";
+  pastCalculations.push(total);
+  console.log(pastCalculations);
+  num1 = total;
+  console.log("num1:", num1);
   num2 = "";
+  console.log("num2:", num2);
   operator = "";
 }
 
@@ -109,6 +121,7 @@ function allClear() {
   num1 = "";
   num2 = "";
   operator = "";
+  pastCalculations = [];
 }
 
 //initiate calculation
@@ -135,9 +148,11 @@ function populateDisplay() {
     button.addEventListener("click", function () {
       //only allows values to be shown in display screen (excludes decimal, operators, clears)
       if (!isNaN(parseInt(button.textContent))) {
+        pastCalculations.push(parseInt(button.textContent));
         displayScreen.textContent += parseInt(button.textContent);
         console.log(displayScreen.textContent);
       } else {
+        pastCalculations.push(button.textContent);
         //if the button clicked is not a number
         //assign the numbers
         if (num1 === "") {
@@ -148,8 +163,8 @@ function populateDisplay() {
         }
         //assign the operator
         if (operators.includes(button.textContent)) {
-          console.log(button.textContent);
           operator = button.textContent;
+          console.log(button.textContent);
         }
         if (button.textContent === "=") {
           operate(num1, num2, operator); // after calculating total, if press another number, bug
@@ -158,7 +173,6 @@ function populateDisplay() {
           allClear();
         }
       }
-      console.log("num1:", num1, "num2:", num2);
     });
   }
 }
