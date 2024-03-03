@@ -1,6 +1,5 @@
 /*
 Issues: 
-- display screen should limit amount of numbers on the screen 
 - after making first calculation, storing the total as num1 does not work 
 - how to do multiple calculations at once 
 
