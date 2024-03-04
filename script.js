@@ -1,8 +1,6 @@
 /*
-Next steps: 
-- make +/-, ., and % work 
-- give error notice when dividing by 0 
-
+Bug: 
+Once total is calculated, if i change num to negative, it only saves in display, wont be taken into account for next calculation 
 
 ==========
 DOM Setup
@@ -64,8 +62,8 @@ CALCULATOR
 let total = 0;
 let num1 = "";
 let num2 = "";
-
 let operator = "";
+let listOfOperators = ["+", "-", "x", "÷"];
 
 let pastCalculations = []; //this is doing nothing for now
 
@@ -91,13 +89,9 @@ function operate(n1, n2, o) {
   } else if (operator === "x") {
     multiply(n1, n2);
   } else if (o === "÷") {
-    if (num2 !== 0) {
-      divide(n1, n2);
-    } else {
-      errorDivision(); //not working
-    }
+    divide(n1, n2);
   }
-  return total;
+  return Number(total.toFixed(2)); //rounds to 2 decimal places
 }
 
 //clears calculator
@@ -119,58 +113,75 @@ function resetDisplay() {
   operator = "";
 }
 
-function errorDivision() {
-  displayScreen.textContent = "Error";
-}
-
 /*
 ================
 Event Listeners 
 ================
 */
-let operators = ["+", "-", "x", "÷"];
 
 function populateDisplay() {
   const calcButtons = document.querySelectorAll(".calc-button");
+
   for (const button of calcButtons) {
     button.addEventListener("click", function () {
       //only allows values to be shown in display screen (excludes decimal, operators, clears)
-      if (!isNaN(parseInt(button.textContent))) {
-        //if button selected is a number
+      if (!isNaN(Number(button.textContent)) || button.textContent === ".") {
+        //if button selected is a number or decimal
         if (total === 0) {
-          displayScreen.textContent += parseInt(button.textContent); //add the number to the display screen
+          displayScreen.textContent += button.textContent; //add the number to the display screen
         } else {
           displayScreen.textContent = "";
-          displayScreen.textContent += parseInt(button.textContent);
+          displayScreen.textContent += button.textContent;
         }
-        pastCalculations.push(parseInt(button.textContent));
+      } else if (
+        button.textContent === "+/-" &&
+        displayScreen.textContent !== ""
+      ) {
+        displayScreen.textContent = Number(displayScreen.textContent) * -1;
+        pastCalculations.push("+/-");
+      } else if (
+        button.textContent === "%" &&
+        displayScreen.textContent !== ""
+      ) {
+        displayScreen.textContent = Number(displayScreen.textContent) / 100;
+        pastCalculations.push("%");
       } else {
-        pastCalculations.push(button.textContent);
         //if the button clicked is not a number
         //assign the numbers
         if (num1 === "") {
           //if num1 is empty, assign a value
-          num1 = parseInt(displayScreen.textContent);
+          num1 = Number(displayScreen.textContent);
+          pastCalculations.push(num1);
         } else if (num1 !== "") {
           //if num1 is not empty
+          if (pastCalculations[pastCalculations.length - 1] === "+/-") {
+            num1 = Number(displayScreen.textContent);
+          }
           if (displayScreen.textContent !== "") {
-            num2 = parseInt(displayScreen.textContent);
+            num2 = Number(displayScreen.textContent);
+            pastCalculations.push(num2);
           }
         }
+        console.log("num1", num1);
+        console.log("num2", num2);
         //assign the operator
-        if (operators.includes(button.textContent)) {
+        if (listOfOperators.includes(button.textContent)) {
           operator = button.textContent;
+          pastCalculations.push(operator);
           displayScreen.textContent = ""; //reset the display screen to empty
           console.log(button.textContent);
         }
         if (button.textContent === "=") {
           total = operate(num1, num2, operator);
+          pastCalculations.push("=");
           resetDisplay();
         }
         if (button.textContent === "AC") {
           allClear();
         }
       }
+
+      console.log(pastCalculations);
     });
   }
 }
