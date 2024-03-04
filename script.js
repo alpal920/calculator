@@ -1,6 +1,9 @@
 /*
-Bug: 
-Once total is calculated, if i change num to negative, it only saves in display, wont be taken into account for next calculation 
+to add: 
+keyboard event listeners 
+
+bugs: 
+if clicking = before num1 is assigned, should result in original num 
 
 ==========
 DOM Setup
@@ -172,6 +175,9 @@ function populateDisplay() {
           console.log(button.textContent);
         }
         if (button.textContent === "=") {
+          if (num2 === "") {
+            num2 = 0;
+          }
           total = operate(num1, num2, operator);
           pastCalculations.push("=");
           resetDisplay();
