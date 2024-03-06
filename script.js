@@ -2,12 +2,6 @@
 to add: 
 keyboard event listeners 
 
-bugs: 
-- if clicking = before num1 is assigned, should result in original num 
-- bug with 0: 
-1 + 3 = 4 
-4 * 100 = 0 
-
 ==========
 DOM Setup
 ==========
@@ -71,8 +65,8 @@ let num2 = "";
 let operator = "";
 let listOfOperators = ["+", "-", "x", "÷"];
 let calculationStatus = "calculating first pair";
-
-let pastCalculations = []; //this is doing nothing for now
+let resetNum2Status = false;
+let pastCalculations = [];
 
 //Calculator Operations
 function add(a, b) {
@@ -123,8 +117,6 @@ function resetDisplay() {
   calculationStatus = "first total calculated";
 }
 
-let resetNum2Status = false;
-
 function resetDisplayForNum2() {
   displayScreen.textContent = "";
 }
@@ -140,29 +132,26 @@ function populateDisplay() {
 
   for (const button of calcButtons) {
     button.addEventListener("click", function () {
-      if (!isNaN(Number(button.textContent)) || button.textContent === ".") {
+      const buttonText = button.textContent;
+
+      if (!isNaN(Number(buttonText)) || buttonText === ".") {
         //if button selected is a number or decimal
         if (calculationStatus === "calculating first pair") {
-          displayScreen.textContent += button.textContent;
+          displayScreen.textContent += buttonText;
         } else if (calculationStatus === "first total calculated") {
           if (num2 === "" && resetNum2Status === false) {
             resetDisplayForNum2();
             resetNum2Status = true;
           }
-          displayScreen.textContent += button.textContent;
+          displayScreen.textContent += buttonText;
         }
-      } else if (
-        button.textContent === "+/-" &&
-        displayScreen.textContent !== ""
-      ) {
+      } else if (buttonText === "+/-" && displayScreen.textContent !== "") {
         displayScreen.textContent = Number(displayScreen.textContent) * -1;
         pastCalculations.push("+/-");
-      } else if (
-        button.textContent === "%" &&
-        displayScreen.textContent !== ""
-      ) {
-        displayScreen.textContent = Number(displayScreen.textContent) / 100;
-        pastCalculations.push("%");
+      } else if (buttonText === "%" && displayScreen.textContent !== "") {
+        const percentVal =
+          parseFloat(displayScreen.textContent.replace("%", "")) / 100;
+        displayScreen.textContent = percentVal.toFixed(3);
       } else {
         //if the button clicked is not a number, assign the numbers
 
@@ -180,23 +169,21 @@ function populateDisplay() {
           }
         }
         //assign the operator
-        if (listOfOperators.includes(button.textContent)) {
-          operator = button.textContent;
+        if (listOfOperators.includes(buttonText)) {
+          operator = buttonText;
           pastCalculations.push(operator);
           displayScreen.textContent = ""; //reset the display screen to empty
         }
-        if (button.textContent === "=") {
-          console.log(num1, num2); //num2 is auto-setting to 0
+        if (buttonText === "=") {
+          console.log(num1, num2);
           total = operate(num1, num2, operator);
           pastCalculations.push("=");
           resetDisplay();
         }
-        if (button.textContent === "AC") {
+        if (buttonText === "AC") {
           allClear();
         }
       }
-
-      console.log(pastCalculations);
     });
   }
 }
