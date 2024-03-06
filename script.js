@@ -163,9 +163,7 @@ function populateDisplay() {
           if (pastCalculations[pastCalculations.length - 1] === "+/-") {
             num1 = Number(displayScreen.textContent);
           } else {
-            num2 = Number(displayScreen.textContent); //this is a BUG
-            //need to set num2 back to empty, not save the total in num2
-            //allow for 0's to be entered
+            num2 = Number(displayScreen.textContent);
             pastCalculations.push(num2);
           }
         }
