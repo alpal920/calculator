@@ -1,6 +1,7 @@
 /*
 to add: 
 keyboard event listeners 
+running list of past calculations at the top of the display screen 
 
 ==========
 DOM Setup
@@ -172,7 +173,7 @@ function populateDisplay() {
         if (listOfOperators.includes(buttonText)) {
           operator = buttonText;
           pastCalculations.push(operator);
-          displayScreen.textContent = ""; //reset the display screen to empty
+          displayScreen.textContent = "";
         }
         if (buttonText === "=") {
           console.log(num1, num2);
