@@ -1,9 +1,7 @@
 /*
 to add: 
 keyboard event listeners 
-test
-bugs: 
-if clicking = before num1 is assigned, should result in original num 
+running list of past calculations at the top of the display screen 
 
 ==========
 DOM Setup
@@ -67,8 +65,9 @@ let num1 = "";
 let num2 = "";
 let operator = "";
 let listOfOperators = ["+", "-", "x", "÷"];
-
-let pastCalculations = []; //this is doing nothing for now
+let calculationStatus = "calculating first pair";
+let resetNum2Status = false;
+let pastCalculations = [];
 
 //Calculator Operations
 function add(a, b) {
@@ -105,6 +104,7 @@ function allClear() {
   num2 = "";
   operator = "";
   pastCalculations = [];
+  calculationStatus = "calculating first pair";
 }
 
 function resetDisplay() {
@@ -114,6 +114,12 @@ function resetDisplay() {
   num1 = total;
   num2 = "";
   operator = "";
+  resetNum2Status = false;
+  calculationStatus = "first total calculated";
+}
+
+function resetDisplayForNum2() {
+  displayScreen.textContent = "";
 }
 
 /*
@@ -127,67 +133,58 @@ function populateDisplay() {
 
   for (const button of calcButtons) {
     button.addEventListener("click", function () {
-      //only allows values to be shown in display screen (excludes decimal, operators, clears)
-      if (!isNaN(Number(button.textContent)) || button.textContent === ".") {
+      const buttonText = button.textContent;
+
+      if (!isNaN(Number(buttonText)) || buttonText === ".") {
         //if button selected is a number or decimal
-        if (total === 0) {
-          displayScreen.textContent += button.textContent; //add the number to the display screen
-        } else {
-          displayScreen.textContent = "";
-          displayScreen.textContent += button.textContent;
+        if (calculationStatus === "calculating first pair") {
+          displayScreen.textContent += buttonText;
+        } else if (calculationStatus === "first total calculated") {
+          if (num2 === "" && resetNum2Status === false) {
+            resetDisplayForNum2();
+            resetNum2Status = true;
+          }
+          displayScreen.textContent += buttonText;
         }
-      } else if (
-        button.textContent === "+/-" &&
-        displayScreen.textContent !== ""
-      ) {
+      } else if (buttonText === "+/-" && displayScreen.textContent !== "") {
         displayScreen.textContent = Number(displayScreen.textContent) * -1;
         pastCalculations.push("+/-");
-      } else if (
-        button.textContent === "%" &&
-        displayScreen.textContent !== ""
-      ) {
-        displayScreen.textContent = Number(displayScreen.textContent) / 100;
-        pastCalculations.push("%");
+      } else if (buttonText === "%" && displayScreen.textContent !== "") {
+        const percentVal =
+          parseFloat(displayScreen.textContent.replace("%", "")) / 100;
+        displayScreen.textContent = percentVal.toFixed(3);
       } else {
-        //if the button clicked is not a number
-        //assign the numbers
+        //if the button clicked is not a number, assign the numbers
+
         if (num1 === "") {
-          //if num1 is empty, assign a value
           num1 = Number(displayScreen.textContent);
           pastCalculations.push(num1);
         } else if (num1 !== "") {
-          //if num1 is not empty
           if (pastCalculations[pastCalculations.length - 1] === "+/-") {
             num1 = Number(displayScreen.textContent);
-          }
-          if (displayScreen.textContent !== "") {
-            num2 = Number(displayScreen.textContent);
+          } else {
+            num2 = Number(displayScreen.textContent); //this is a BUG
+            //need to set num2 back to empty, not save the total in num2
+            //allow for 0's to be entered
             pastCalculations.push(num2);
           }
         }
-        console.log("num1", num1);
-        console.log("num2", num2);
         //assign the operator
-        if (listOfOperators.includes(button.textContent)) {
-          operator = button.textContent;
+        if (listOfOperators.includes(buttonText)) {
+          operator = buttonText;
           pastCalculations.push(operator);
-          displayScreen.textContent = ""; //reset the display screen to empty
-          console.log(button.textContent);
+          displayScreen.textContent = "";
         }
-        if (button.textContent === "=") {
-          if (num2 === "") {
-            num2 = 0;
-          }
+        if (buttonText === "=") {
+          console.log(num1, num2);
           total = operate(num1, num2, operator);
           pastCalculations.push("=");
           resetDisplay();
         }
-        if (button.textContent === "AC") {
+        if (buttonText === "AC") {
           allClear();
         }
       }
-
-      console.log(pastCalculations);
     });
   }
 }
