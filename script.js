@@ -2,6 +2,7 @@
 to add: 
 keyboard event listeners 
 running list of past calculations at the top of the display screen 
+mobile friendly 
 
 ==========
 DOM Setup
