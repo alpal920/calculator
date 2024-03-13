@@ -122,7 +122,7 @@ function resetDisplayForNum2() {
   displayScreen.textContent = "";
 }
 
-function simulateButtonClick(button) {
+function performCalculatorOperations(button) {
   const buttonText = button.textContent;
   if (buttonText === ".") {
     if (!(displayScreen.textContent.includes("."))) {
@@ -189,24 +189,10 @@ Event Listeners
 
 function populateDisplay() {
   const calcButtons = document.querySelectorAll(".calc-button");
-  //when keyboard event, need to check what i typed
 
-
-  document.addEventListener('keyup', onKey);
-
-  function onKey(e) { //FILL IN
-    let keyedButton = e.key;
-    console.log(keyedButton);
-
-    simulateButtonClick(keyedButton);
-
-  }
-
-
-  //when mouse clicking, button, need to check what button it is
   for (const button of calcButtons) {
     button.addEventListener("click", function () {
-      simulateButtonClick(button);
+      performCalculatorOperations(button);
     });
   }
 }
