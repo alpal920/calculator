@@ -110,13 +110,10 @@ body {
 }
 
 button:hover {
-  color: white;
   background-color: #292f36;
   cursor: pointer;
-  border: 3px solid cyan;
-  color: cyan;
-  transform: translateY(2px); /* Move the button down slightly */
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Add a subtle box shadow */
+  color: white;
+  outline: solid 3px;
 }
 
 /* Footer */
